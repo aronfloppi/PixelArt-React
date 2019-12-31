@@ -7,13 +7,22 @@ import Canvas from "./components/Canvas";
 import ColorPicker from "./components/ColorPicker";
 
 function App() {
-  const [color, setColor] = useState(0);
+  let localColor = localStorage.getItem("color");
+  if (localColor !== null) {
+    localColor = JSON.parse(localColor);
+  } else {
+    localColor = 0;
+  }
+  const [color, setColor] = useState(localColor);
 
   return (
     <div className="App">
       <ColorPicker
         currentColor={color}
-        setColor={newColor => setColor(newColor)}
+        setColor={newColor => {
+          setColor(newColor);
+          localStorage.setItem("color", newColor);
+        }}
       />
       <Canvas currentColor={color} />
     </div>
